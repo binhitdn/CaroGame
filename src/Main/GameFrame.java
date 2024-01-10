@@ -1,4 +1,5 @@
 package Main;
+
 import java.awt.BorderLayout;
 
 import java.awt.Color;
@@ -798,9 +799,10 @@ public void showDrawRequest() {
     }
 }
 public void addMessage(String message){
-    String temp = textArea.getText();
+//    String temp = textArea.getText();
+	String temp = "";
     temp += competitor.getNickname() + ": " + message+"\n";
-    textArea_1.setText(temp);
+    textArea_1.append(temp);
     textArea_1.setCaretPosition(textArea_1.getDocument().getLength());
 }
 

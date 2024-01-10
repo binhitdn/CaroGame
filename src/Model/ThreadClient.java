@@ -87,7 +87,7 @@ public class ThreadClient implements Runnable {
                 	Client.openView("REGISTER");
                     JOptionPane.showMessageDialog(Client.registerFrm, "Tên tài khoản đã được người khác sử dụng");
                 }
-               
+               // thong bao client khac dang nhap vao va dang online
                 if(messageSplit[0].equals("chat-server")){
                     if(Client.homePageFrm!=null){
                     	Client.homePageFrm.addMessage(messageSplit[1]);
