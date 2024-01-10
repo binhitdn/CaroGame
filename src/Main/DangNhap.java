@@ -10,18 +10,18 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import com.google.common.hash.Hashing;
-
 import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.nio.charset.StandardCharsets;
-
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 public class DangNhap extends javax.swing.JFrame {
-	 private JButton jButton1;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JButton jButton1;
 	    private JButton jButton2;
 	    private JLabel jLabel1;
 	    private JLabel jLabel2;
@@ -36,7 +36,7 @@ public class DangNhap extends javax.swing.JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setSize(410,228);
+        this.setSize(510,320);
         this.setIconImage(new ImageIcon("src/images/unnamed.png").getImage());
     }
  

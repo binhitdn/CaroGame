@@ -20,9 +20,7 @@ public class ThreadClient implements Runnable {
     private BufferedWriter os;
     private BufferedReader is;
     private Socket socketOfClient;
-    private int ID_Server;
-
-    
+   
     @Override
     public void run() {
      try {

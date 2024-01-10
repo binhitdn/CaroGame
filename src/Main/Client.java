@@ -34,6 +34,7 @@ public class Client {
     public static JoinRoomPassword joinRoomPassword;
     public static FindRoom findRoom;
     public static FriendList friendList;
+    public static GameAI gameAI;
     
     
     
@@ -146,6 +147,10 @@ public class Client {
                 	friendList = new FriendList();
                 	friendList.setVisible(true);
                 	break;
+                case "GAME_AI":
+                    gameAI = new GameAI();
+                    gameAI.setVisible(true);
+                    break;
                       
                 	
             }
@@ -253,6 +258,8 @@ public class Client {
                 case "ROOM_LIST":
                     roomList.dispose();
                     break;
+                case "GAME_AI":
+                	gameAI.dispose();
                     
                     
 

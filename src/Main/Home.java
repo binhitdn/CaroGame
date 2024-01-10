@@ -295,19 +295,20 @@ public class Home extends JFrame {
 		});
 		panel_3.add(btnNewButton_3);
 		
-		JButton btnNewButton_5 = new JButton("Bạn bè");
-		btnNewButton_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panel_3.add(btnNewButton_5);
+//		JButton btnNewButton_5 = new JButton("Bạn bè");
+//		btnNewButton_5.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//			
+//			}
+//		});
+//		panel_3.add(btnNewButton_5);
 		
-		JButton btnNewButton_8 = new JButton("Chơi v ới máy");
-		btnNewButton_8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panel_3.add(btnNewButton_8);
+//		JButton btnNewButton_8 = new JButton("Chơi v ới máy");
+//		btnNewButton_8.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//			}
+//		});
+//		panel_3.add(btnNewButton_8);
 		
 		JButton btnNewButton_9 = new JButton("Thoát");
 		panel_3.add(btnNewButton_9);

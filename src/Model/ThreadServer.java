@@ -97,7 +97,7 @@ public class ThreadServer implements Runnable {
             is = new BufferedReader(new InputStreamReader(socketOfServer.getInputStream()));
             os = new BufferedWriter(new OutputStreamWriter(socketOfServer.getOutputStream()));
             System.out.println("Khời động luông mới thành công, ID là: " + clientNumber);
-            write("server-send-id" + "," + this.clientNumber);
+//            write("server-send-id" + "," + this.clientNumber);
             String message;
             while (!isClosed) {
                 message = is.readLine();
@@ -147,15 +147,15 @@ public class ThreadServer implements Runnable {
                     Server.threadServers.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đã offline");
                     this.user=null;
                 }
-                if (messageSplit[0].equals("view-friend-list")) {
-                    List<User> friends = userData.getListFriend(this.user.getID());
-                    StringBuilder res = new StringBuilder("return-friend-list,");
-                    for (User friend : friends) {
-                        res.append(friend.getID()).append(",").append(friend.getNickname()).append(",").append(friend.isOnline() ? 1 : 0).append(",").append(friend.isPlaying() ? 1 : 0).append(",");
-                    }
-                    System.out.println(res);
-                    write(res.toString());
-                }
+//                if (messageSplit[0].equals("view-friend-list")) {
+//                    List<User> friends = userData.getListFriend(this.user.getID());
+//                    StringBuilder res = new StringBuilder("return-friend-list,");
+//                    for (User friend : friends) {
+//                        res.append(friend.getID()).append(",").append(friend.getNickname()).append(",").append(friend.isOnline() ? 1 : 0).append(",").append(friend.isPlaying() ? 1 : 0).append(",");
+//                    }
+//                    System.out.println(res);
+//                    write(res.toString());
+//                }
                 
                 if(messageSplit[0].equals("chat-server")){
                     Server.threadServers.boardCast(clientNumber,messageSplit[0]+","+ "("+(new Date()).time()+")"+user.getNickname()+" : "+ messageSplit[1]);
@@ -254,37 +254,37 @@ public class ThreadServer implements Runnable {
                     }
                 }
                 
-              //Xử lý yêu cầu kết bạn
-                if (messageSplit[0].equals("make-friend")) {
-                    Server.threadServers.getServerThreadByUserID(Integer.parseInt(messageSplit[1]))
-                            .write("make-friend-request," + this.user.getID() + "," + userData.getNickNameByID(this.user.getID()));
-                }
-                //Xử lý xác nhận kết bạn
-                if (messageSplit[0].equals("make-friend-confirm")) {
-                    userData.makeFriend(this.user.getID(), Integer.parseInt(messageSplit[1]));
-                    System.out.println("Kết bạn thành công");
-                }
-                //Xử lý khi gửi yêu cầu thách đấu tới bạn bè
-                if (messageSplit[0].equals("duel-request")) {
-                    Server.threadServers.sendMessageToUserID(Integer.parseInt(messageSplit[1]),
-                            "duel-notice," + this.user.getID() + "," + this.user.getNickname());
-                }
-                //Xử lý khi đối thủ đồng ý thách đấu
-                if (messageSplit[0].equals("agree-duel")) {
-                    this.room = new Room(this);
-                    int ID_User2 = Integer.parseInt(messageSplit[1]);
-                    ThreadServer user2 = Server.threadServers.getServerThreadByUserID(ID_User2);
-                    room.setUser2(user2);
-                    user2.setRoom(room);
-                    room.increaseNumberOfGame();
-                    goToOwnRoom();
-                    userData.updateToPlaying(this.user.getID());
-                }
-                //Xử lý khi không đồng ý thách đấu
-                if (messageSplit[0].equals("disagree-duel")) {
-                    Server.threadServers.sendMessageToUserID(Integer.parseInt(messageSplit[1]), message);
-                }
-                
+//              //Xử lý yêu cầu kết bạn
+//                if (messageSplit[0].equals("make-friend")) {
+//                    Server.threadServers.getServerThreadByUserID(Integer.parseInt(messageSplit[1]))
+//                            .write("make-friend-request," + this.user.getID() + "," + userData.getNickNameByID(this.user.getID()));
+//                }
+//                //Xử lý xác nhận kết bạn
+//                if (messageSplit[0].equals("make-friend-confirm")) {
+//                    userData.makeFriend(this.user.getID(), Integer.parseInt(messageSplit[1]));
+//                    System.out.println("Kết bạn thành công");
+//                }
+//                //Xử lý khi gửi yêu cầu thách đấu tới bạn bè
+//                if (messageSplit[0].equals("duel-request")) {
+//                    Server.threadServers.sendMessageToUserID(Integer.parseInt(messageSplit[1]),
+//                            "duel-notice," + this.user.getID() + "," + this.user.getNickname());
+//                }
+//                //Xử lý khi đối thủ đồng ý thách đấu
+//                if (messageSplit[0].equals("agree-duel")) {
+//                    this.room = new Room(this);
+//                    int ID_User2 = Integer.parseInt(messageSplit[1]);
+//                    ThreadServer user2 = Server.threadServers.getServerThreadByUserID(ID_User2);
+//                    room.setUser2(user2);
+//                    user2.setRoom(room);
+//                    room.increaseNumberOfGame();
+//                    goToOwnRoom();
+//                    userData.updateToPlaying(this.user.getID());
+//                }
+//                //Xử lý khi không đồng ý thách đấu
+//                if (messageSplit[0].equals("disagree-duel")) {
+//                    Server.threadServers.sendMessageToUserID(Integer.parseInt(messageSplit[1]), message);
+//                }
+//                
                 
                 if(messageSplit[0].equals("caro")){
                     room.getCompetitor(clientNumber).write(message);

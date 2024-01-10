@@ -45,7 +45,6 @@ public class GameFrame extends JFrame {
     private int numberOfMatch;
     
     
-    private JButton preButton;
     private int userWin;
     private int competitorWin;
 
@@ -67,7 +66,7 @@ public class GameFrame extends JFrame {
     
 
 	private JPanel contentPane;
-	private Caro caro = caro = new Caro();
+	private Caro caro = new Caro();
 
 	public GameFrame(User competitor, int room_ID, int isStart,String competitorIP) {
 		this.competitorIP = competitorIP;
