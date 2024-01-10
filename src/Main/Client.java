@@ -30,11 +30,8 @@ public class Client {
     public static WaitingRoom waitingRoom;
     public static RoomList roomList;
     public static RoomName roomName;
-    public static FriendRequest friendRequest;
     public static JoinRoomPassword joinRoomPassword;
     public static FindRoom findRoom;
-    public static FriendList friendList;
-    public static GameAI gameAI;
     
     
     
@@ -45,9 +42,7 @@ public class Client {
     public static JFrame getVisibleJFrame() {
         if (roomList != null && roomList.isVisible())
             return roomList;
-        if (friendList != null && friendList.isVisible()) {
-            return friendList;
-        }
+        
         if (createRoomPassword != null && createRoomPassword.isVisible()) {
             return createRoomPassword;
         }
@@ -143,14 +138,8 @@ public class Client {
                 	roomName = new RoomName();
                 	roomName.setVisible(true);
                 	break;
-                case "FRIEND_LIST":
-                	friendList = new FriendList();
-                	friendList.setVisible(true);
-                	break;
-                case "GAME_AI":
-                    gameAI = new GameAI();
-                    gameAI.setVisible(true);
-                    break;
+                
+               
                       
                 	
             }
@@ -199,9 +188,7 @@ public class Client {
                     joinRoomPassword = new JoinRoomPassword(arg1, arg2);
                     joinRoomPassword.setVisible(true);
                     break;
-                case "FRIEND_REQUEST":
-                    friendRequest = new FriendRequest(arg1, arg2);
-                    friendRequest.setVisible(true);
+            
             }
         }
     }
@@ -258,8 +245,7 @@ public class Client {
                 case "ROOM_LIST":
                     roomList.dispose();
                     break;
-                case "GAME_AI":
-                	gameAI.dispose();
+                
                     
                     
 
@@ -296,8 +282,6 @@ public class Client {
         if(waitingRoom!=null) waitingRoom.dispose();
         if(roomList!=null) roomList.dispose();
         if(roomName!=null) roomName.dispose();
-        if(friendList!=null) friendList.dispose();
-        if(friendRequest!=null) friendRequest.dispose();
         if(joinRoomPassword!=null) joinRoomPassword.dispose();
         if(findRoom!=null) findRoom.dispose();
         
