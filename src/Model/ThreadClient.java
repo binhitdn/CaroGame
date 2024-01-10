@@ -95,7 +95,22 @@ public class ThreadClient implements Runnable {
                     	Client.homePageFrm.addMessage(messageSplit[1]);
                     }
                 }
-               
+                if (messageSplit[0].equals("your-created-room")) {
+                    Client.closeAllViews();
+                    Client.openView("WAITING_ROOM");
+                    Client.waitingRoom.setRoomName(messageSplit[1]);
+                    if (messageSplit.length == 3)
+                        Client.waitingRoom.setRoomPassword("Mật khẩu phòng: " + messageSplit[2]);
+                }
+                if (messageSplit[0].equals("room-list")) {
+                    Vector<String> rooms = new Vector<>();
+                    Vector<String> passwords = new Vector<>();
+                    for (int i = 1; i < messageSplit.length; i = i + 2) {
+                        rooms.add("Phòng " + messageSplit[i]);
+                        passwords.add(messageSplit[i + 1]);
+                    }
+                    Client.roomList.updateRoomList(rooms, passwords);
+                }
                 
 
                 
@@ -121,9 +136,40 @@ public class ThreadClient implements Runnable {
                             , competitor
                             , roomID
                             ,isStart
+                            ,competitorIP
+                    
                          );
                     Client.gameFrame.newgame();
                 }
+                
+                
+                
+              //Xử lý hiển thị thông tin đối thủ là bạn bè/không
+//                if (messageSplit[0].equals("check-friend-response")) {
+//                    if (Client.competitorInfo != null) {
+//                        Client.competitorInfo.checkFriend((messageSplit[1].equals("1")));
+//                    }
+//                }
+                //Xử lý kết quả tìm phòng từ server
+                if (messageSplit[0].equals("room-fully")) {
+                    Client.closeAllViews();
+                    Client.openView("HOMEPAGE");
+                    JOptionPane.showMessageDialog(Client.homePageFrm, "Phòng chơi đã đủ 2 người chơi");
+                }
+                
+                // Xử lý không tìm thấy phòng trong chức năng vào phòng
+                if (messageSplit[0].equals("room-not-found")) {
+                    Client.closeAllViews();
+                    Client.openView("HOMEPAGE");
+                    JOptionPane.showMessageDialog(Client.homePageFrm, "Không tìm thấy phòng");
+                }
+                // Xử lý phòng có mật khẩu sai
+                if (messageSplit[0].equals("room-wrong-password")) {
+                    Client.closeAllViews();
+                    Client.openView("HOMEPAGE");
+                    JOptionPane.showMessageDialog(Client.homePageFrm, "Mật khẩu phòng sai");
+                }
+                
                 if(messageSplit[0].equals("caro")){
                 	Client.gameFrame.addCompetitorMove(messageSplit[1], messageSplit[2]);
                 }
@@ -170,6 +216,7 @@ public class ThreadClient implements Runnable {
                     Client.openView("HOMEPAGE");
                 }             
             }
+            
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {

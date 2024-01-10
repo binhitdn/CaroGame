@@ -129,11 +129,11 @@ public class User {
         return numberOfwin;
     }
 
-    public boolean isIsOnline() {
+    public boolean isOnline() {
         return isOnline;
     }
 
-    public boolean isIsPlaying() {
+    public boolean isPlaying() {
         return isPlaying;
     }
 

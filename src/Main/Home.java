@@ -173,7 +173,7 @@ public class Home extends JFrame {
 		textArea.setEnabled(false);
 		textArea.setDisabledTextColor(Color.BLACK);
 		
-		scrollPane.setColumnHeaderView(textArea);
+		scrollPane.setViewportView(textArea);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		
@@ -261,6 +261,56 @@ public class Home extends JFrame {
 		btnNewButton_4.setBackground(new Color(255, 69, 0));
 		btnNewButton_4.setForeground(new Color(255, 255, 255));
 		panel_3.add(btnNewButton_4);
+		
+		JButton btnNewButton_2 = new JButton("Tạo phòng");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int res = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn đặt mật khẩu cho phòng không?", "Tạo phòng", JOptionPane.YES_NO_OPTION);
+		        if (res == JOptionPane.YES_OPTION) {
+		            Client.closeView("HOMEPAGE");
+		            Client.openView("CREATE_ROOM_PASSWORD");
+		        } else if (res == JOptionPane.NO_OPTION) {
+		            try {
+		                Client.threadClient.write("create-room,");
+		                Client.closeView("HOMEPAGE");
+		            } catch (IOException ex) {
+		                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+		            }
+		        }
+			}
+		});
+		panel_3.add(btnNewButton_2);
+		
+		JButton btnNewButton_3 = new JButton("Vào phòng");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+		            Client.closeView("HOMEPAGE");
+		            Client.openView("ROOM_LIST");
+		            Client.threadClient.write("view-room-list,");
+		        } catch (IOException ex) {
+		            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+		        }
+			}
+		});
+		panel_3.add(btnNewButton_3);
+		
+		JButton btnNewButton_5 = new JButton("Bạn bè");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_3.add(btnNewButton_5);
+		
+		JButton btnNewButton_8 = new JButton("Chơi v ới máy");
+		btnNewButton_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_3.add(btnNewButton_8);
+		
+		JButton btnNewButton_9 = new JButton("Thoát");
+		panel_3.add(btnNewButton_9);
 		
 		JLabel label = new JLabel("");
 		panel_3.add(label);

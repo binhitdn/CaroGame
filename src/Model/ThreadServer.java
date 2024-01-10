@@ -85,7 +85,12 @@ public class ThreadServer implements Runnable {
          room.getCompetitor(this.clientNumber).write("go-to-room,"+ room.getID()+","+this.clientIP+",1,"+getStringFromUser(user));
     }
     
-    @Override
+    public void goToOwnRoom() throws IOException {
+        write("go-to-room," + room.getID() + "," + room.getCompetitor(this.getClientNumber()).getClientIP() + ",1," + getStringFromUser(room.getCompetitor(this.getClientNumber()).getUser()));
+        room.getCompetitor(this.clientNumber).write("go-to-room," + room.getID() + "," + this.clientIP + ",0," + getStringFromUser(user));
+    }
+
+    
     public void run() {
         try {
        
@@ -142,6 +147,15 @@ public class ThreadServer implements Runnable {
                     Server.threadServers.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đã offline");
                     this.user=null;
                 }
+                if (messageSplit[0].equals("view-friend-list")) {
+                    List<User> friends = userData.getListFriend(this.user.getID());
+                    StringBuilder res = new StringBuilder("return-friend-list,");
+                    for (User friend : friends) {
+                        res.append(friend.getID()).append(",").append(friend.getNickname()).append(",").append(friend.isOnline() ? 1 : 0).append(",").append(friend.isPlaying() ? 1 : 0).append(",");
+                    }
+                    System.out.println(res);
+                    write(res.toString());
+                }
                 
                 if(messageSplit[0].equals("chat-server")){
                     Server.threadServers.boardCast(clientNumber,messageSplit[0]+","+ "("+(new Date()).time()+")"+user.getNickname()+" : "+ messageSplit[1]);
@@ -154,6 +168,18 @@ public class ThreadServer implements Runnable {
                     
                    
                     
+                }
+                if (messageSplit[0].equals("create-room")) {
+                    room = new Room(this);
+                    if (messageSplit.length == 2) {
+                        room.setPassword(messageSplit[1]);
+                        write("your-created-room," + room.getID() + "," + messageSplit[1]);
+                        System.out.println("Tạo phòng mới thành công, password là " + messageSplit[1]);
+                    } else {
+                        write("your-created-room," + room.getID());
+                        System.out.println("Tạo phòng mới thành công");
+                    }
+                    userData.updateToPlaying(this.user.getID());
                 }
                 
                 if(messageSplit[0].equals("go-to-room")){
@@ -168,6 +194,19 @@ public class ThreadServer implements Runnable {
                     if(!isFinded){
                         write("room-not-found,");
                     }
+                }
+                if (messageSplit[0].equals("view-room-list")) {
+                    StringBuilder res = new StringBuilder("room-list,");
+                    int number = 1;
+                    for (ThreadServer serverThread : Server.threadServers.getListServerThreads()) {
+                        if (number > 8) break;
+                        if (serverThread.room != null && serverThread.room.getNumberOfUser() == 1) {
+                            res.append(serverThread.room.getID()).append(",").append(serverThread.room.getPassword()).append(",");
+                        }
+                        number++;
+                    }
+                    write(res.toString());
+                    System.out.println(res);
                 }
                 
                 if (messageSplit[0].equals("quick-room")) {
@@ -189,6 +228,61 @@ public class ThreadServer implements Runnable {
                         this.room = new Room(this);
                         userData.updateToPlaying(this.user.getID());
                     }
+                }
+                if (messageSplit[0].equals("check-friend")) {
+                    String res = "check-friend-response,";
+                    res += (userData.checkIsFriend(this.user.getID(), Integer.parseInt(messageSplit[1])) ? 1 : 0);
+                    write(res);
+                }
+                if (messageSplit[0].equals("cancel-room")) {
+                    userData.updateToNotPlaying(this.user.getID());
+                    System.out.println("Đã hủy phòng");
+                    this.room = null;
+                }
+                if (messageSplit[0].equals("join-room")) {
+                    int ID_room = Integer.parseInt(messageSplit[1]);
+                    for (ThreadServer serverThread : Server.threadServers.getListServerThreads()) {
+                        if (serverThread.room != null && serverThread.room.getID() == ID_room) {
+                            serverThread.room.setUser2(this);
+                            this.room = serverThread.room;
+                            System.out.println("Đã vào phòng " + room.getID());
+                            room.increaseNumberOfGame();
+                            goToPartnerRoom();
+                            userData.updateToPlaying(this.user.getID());
+                            break;
+                        }
+                    }
+                }
+                
+              //Xử lý yêu cầu kết bạn
+                if (messageSplit[0].equals("make-friend")) {
+                    Server.threadServers.getServerThreadByUserID(Integer.parseInt(messageSplit[1]))
+                            .write("make-friend-request," + this.user.getID() + "," + userData.getNickNameByID(this.user.getID()));
+                }
+                //Xử lý xác nhận kết bạn
+                if (messageSplit[0].equals("make-friend-confirm")) {
+                    userData.makeFriend(this.user.getID(), Integer.parseInt(messageSplit[1]));
+                    System.out.println("Kết bạn thành công");
+                }
+                //Xử lý khi gửi yêu cầu thách đấu tới bạn bè
+                if (messageSplit[0].equals("duel-request")) {
+                    Server.threadServers.sendMessageToUserID(Integer.parseInt(messageSplit[1]),
+                            "duel-notice," + this.user.getID() + "," + this.user.getNickname());
+                }
+                //Xử lý khi đối thủ đồng ý thách đấu
+                if (messageSplit[0].equals("agree-duel")) {
+                    this.room = new Room(this);
+                    int ID_User2 = Integer.parseInt(messageSplit[1]);
+                    ThreadServer user2 = Server.threadServers.getServerThreadByUserID(ID_User2);
+                    room.setUser2(user2);
+                    user2.setRoom(room);
+                    room.increaseNumberOfGame();
+                    goToOwnRoom();
+                    userData.updateToPlaying(this.user.getID());
+                }
+                //Xử lý khi không đồng ý thách đấu
+                if (messageSplit[0].equals("disagree-duel")) {
+                    Server.threadServers.sendMessageToUserID(Integer.parseInt(messageSplit[1]), message);
                 }
                 
                 

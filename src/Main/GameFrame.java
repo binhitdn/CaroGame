@@ -37,6 +37,8 @@ import javax.swing.JTextArea;
 
 public class GameFrame extends JFrame {
 	private User competitor;
+	private final String competitorIP;
+	
 	private Timer timer;
     private Integer second, minute;
     
@@ -59,6 +61,7 @@ public class GameFrame extends JFrame {
     JLabel lblNewLabel_2_1_1_1;
     JLabel lblNewLabel_3_1_1;
     JLabel lblNewLabel_1;
+    
 
     
     
@@ -66,8 +69,8 @@ public class GameFrame extends JFrame {
 	private JPanel contentPane;
 	private Caro caro = caro = new Caro();
 
-	public GameFrame(User competitor, int room_ID, int isStart) {
-		
+	public GameFrame(User competitor, int room_ID, int isStart,String competitorIP) {
+		this.competitorIP = competitorIP;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(892,618);
 		setResizable(false);

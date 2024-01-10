@@ -390,5 +390,111 @@ public class UserData extends Database{
 				  .hashString(password, StandardCharsets.UTF_8)
 				  .toString();
 	}
+    
+    public List<User> getListFriend(int ID) {
+        List<User> ListFriend = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT User.ID, User.NickName, User.IsOnline, User.IsPlaying\n"
+                    + "FROM user\n"
+                    + "WHERE User.ID IN (\n"
+                    + "	SELECT ID_User1\n"
+                    + "    FROM friend\n"
+                    + "    WHERE ID_User2 = ?\n"
+                    + ")\n"
+                    + "OR User.ID IN(\n"
+                    + "	SELECT ID_User2\n"
+                    + "    FROM friend\n"
+                    + "    WHERE ID_User1 = ?\n"
+                    + ")");
+            preparedStatement.setInt(1, ID);
+            preparedStatement.setInt(2, ID);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                ListFriend.add(new User(rs.getInt(1),
+                        rs.getString(2),
+                        (rs.getInt(3) == 1),
+                        (rs.getInt(4)) == 1));
+            }
+            ListFriend.sort(new Comparator<User>() {
+                @Override
+                public int compare(User o1, User o2) {
+                    if (o1.isOnline() && !o2.isOnline())
+                        return -1;
+                    if (o1.isPlaying() && !o2.isOnline())
+                        return -1;
+                    if (!o1.isPlaying() && o1.isOnline() && o2.isPlaying() && o2.isOnline())
+                        return -1;
+                    return 0;
+                }
+
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ListFriend;
+    }
+    public void makeFriend(int ID1, int ID2) {
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO friend(ID_User1,ID_User2)\n"
+                    + "VALUES(?,?)");
+            preparedStatement.setInt(1, ID1);
+            preparedStatement.setInt(2, ID2);
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public boolean checkIsFriend(int ID1, int ID2) {
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT Friend.ID_User1\n"
+                    + "FROM friend\n"
+                    + "WHERE (ID_User1 = ? AND ID_User2 = ?)\n"
+                    + "OR (ID_User1 = ? AND ID_User2 = ?)");
+            preparedStatement.setInt(1, ID1);
+            preparedStatement.setInt(2, ID2);
+            preparedStatement.setInt(3, ID2);
+            preparedStatement.setInt(4, ID1);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void addFriendShip(int ID1, int ID2) {
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO friend(ID_User1, ID_User2)\n" +
+                    "VALUES (?,?)");
+            preparedStatement.setInt(1, ID1);
+            preparedStatement.setInt(2, ID2);
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void removeFriendship(int ID1, int ID2) {
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement("DELETE FROM friend\n" +
+                    "WHERE (ID_User1 = ? AND ID_User2 = ?)\n" +
+                    "OR(ID_User1 = ? AND ID_User2 = ?)");
+            preparedStatement.setInt(1, ID1);
+            preparedStatement.setInt(2, ID2);
+            preparedStatement.setInt(3, ID2);
+            preparedStatement.setInt(4, ID1);
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
    
 }

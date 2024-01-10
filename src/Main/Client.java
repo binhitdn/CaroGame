@@ -26,9 +26,37 @@ public class Client {
     public static Info info;
     public static InfoCompetitor infoc;
     public static BangXepHang bxh;
+    public static CreateRoomPassword createRoomPassword;
+    public static WaitingRoom waitingRoom;
+    public static RoomList roomList;
+    public static RoomName roomName;
+    public static FriendRequest friendRequest;
+    public static JoinRoomPassword joinRoomPassword;
+    public static FindRoom findRoom;
+    public static FriendList friendList;
+    
+    
+    
     
     
     public Client() {
+    }
+    public static JFrame getVisibleJFrame() {
+        if (roomList != null && roomList.isVisible())
+            return roomList;
+        if (friendList != null && friendList.isVisible()) {
+            return friendList;
+        }
+        if (createRoomPassword != null && createRoomPassword.isVisible()) {
+            return createRoomPassword;
+        }
+        if (joinRoomPassword != null && joinRoomPassword.isVisible()) {
+            return joinRoomPassword;
+        }
+//        if (rankFrm != null && rank.isVisible()) {
+//            return rank;
+//        }
+        return homePageFrm;
     }
 
  
@@ -98,22 +126,43 @@ public class Client {
                 	bxh = new BangXepHang();
                 	bxh.setVisible(true);
                 	break;
-                
+                case "CREATE_ROOM_PASSWORD":
+                	createRoomPassword = new CreateRoomPassword();
+                    createRoomPassword.setVisible(true);
+                    break;
+                case "WAITING_ROOM":
+                    waitingRoom = new WaitingRoom();
+                    waitingRoom.setVisible(true);
+                    break;
+                case "ROOM_LIST":
+                    roomList = new RoomList();
+                    roomList.setVisible(true);
+                    break;
+                case "ROOM_NAME":
+                	roomName = new RoomName();
+                	roomName.setVisible(true);
+                	break;
+                case "FRIEND_LIST":
+                	friendList = new FriendList();
+                	friendList.setVisible(true);
+                	break;
+                      
                 	
             }
         }
     }
     
-    public static void openView(String viewName, User competitor, int room_ID, int isStart){
+    public static void openView(String viewName, User competitor, int room_ID, int isStart,String competitorIP) {
         if(viewName != null){
             switch(viewName){
                 case "GAMECLIENT":
-                    gameFrame = new GameFrame(competitor, room_ID, isStart);
+                    gameFrame = new GameFrame(competitor, room_ID, isStart, competitorIP);
                     gameFrame.setVisible(true);
                     break;
             }
         }
     }
+
     public static void openView(String viewName, User User){
         if(viewName != null){
             switch(viewName){
@@ -134,6 +183,20 @@ public class Client {
                 case "LOGIN":
                     loginFrm = new DangNhap(arg1, arg2);
                     loginFrm.setVisible(true);
+            }
+            
+        }
+    }
+    public static void openView(String viewName, int arg1, String arg2) {
+        if (viewName != null) {
+            switch (viewName) {
+                case "JOIN_ROOM_PASSWORD":
+                    joinRoomPassword = new JoinRoomPassword(arg1, arg2);
+                    joinRoomPassword.setVisible(true);
+                    break;
+                case "FRIEND_REQUEST":
+                    friendRequest = new FriendRequest(arg1, arg2);
+                    friendRequest.setVisible(true);
             }
         }
     }
@@ -181,6 +244,18 @@ public class Client {
                 case "INFOC":
                 	infoc.dispose();
                 	break;
+                case "CREATE_ROOM_PASSWORD":
+                    createRoomPassword.dispose();
+                    break;
+                case "WAITING_ROOM":
+                    waitingRoom.dispose();
+                    break;
+                case "ROOM_LIST":
+                    roomList.dispose();
+                    break;
+                    
+                    
+
             }
             
         }
@@ -209,6 +284,16 @@ public class Client {
     
         if(info!=null) info.dispose();
         if(infoc!=null) infoc.dispose();
+        if(bxh!=null) bxh.dispose();
+        if(createRoomPassword!=null) createRoomPassword.dispose();
+        if(waitingRoom!=null) waitingRoom.dispose();
+        if(roomList!=null) roomList.dispose();
+        if(roomName!=null) roomName.dispose();
+        if(friendList!=null) friendList.dispose();
+        if(friendRequest!=null) friendRequest.dispose();
+        if(joinRoomPassword!=null) joinRoomPassword.dispose();
+        if(findRoom!=null) findRoom.dispose();
+        
     }
     
   
