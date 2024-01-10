@@ -245,7 +245,9 @@ public class Client {
                 case "ROOM_LIST":
                     roomList.dispose();
                     break;
-                
+                case "ROOM_NAME":
+                    roomName.dispose();
+                	break;                
                     
                     
 
@@ -284,6 +286,7 @@ public class Client {
         if(roomName!=null) roomName.dispose();
         if(joinRoomPassword!=null) joinRoomPassword.dispose();
         if(findRoom!=null) findRoom.dispose();
+        
         
     }
     

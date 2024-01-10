@@ -182,16 +182,29 @@ public class ThreadServer implements Runnable {
                     userData.updateToPlaying(this.user.getID());
                 }
                 
-                if(messageSplit[0].equals("go-to-room")){
+                if (messageSplit[0].equals("go-to-room")) {
                     int roomName = Integer.parseInt(messageSplit[1]);
                     boolean isFinded = false;
                     for (ThreadServer serverThread : Server.threadServers.getListServerThreads()) {
-                        if(serverThread.getRoom()!=null&&serverThread.getRoom().getID()==roomName){
+                        if (serverThread.getRoom() != null && serverThread.getRoom().getID() == roomName) {
                             isFinded = true;
+                            if (serverThread.getRoom().getNumberOfUser() == 2) {
+                                write("room-fully,");
+                            } else {
+                                if (serverThread.getRoom().getPassword() == null || serverThread.getRoom().getPassword().equals(messageSplit[2])) {
+                                    this.room = serverThread.getRoom();
+                                    room.setUser2(this);
+                                    room.increaseNumberOfGame();
+                                    this.userData.updateToPlaying(this.user.getID());
+                                    goToPartnerRoom();
+                                } else {
+                                    write("room-wrong-password,");
+                                }
+                            }
                             break;
                         }
                     }
-                    if(!isFinded){
+                    if (!isFinded) {
                         write("room-not-found,");
                     }
                 }

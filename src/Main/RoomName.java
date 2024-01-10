@@ -3,6 +3,7 @@ package Main;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import java.awt.Color;
 
 /**
  * @author Admin
@@ -32,6 +33,7 @@ public class RoomName extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel1.setForeground(Color.CYAN);
         frameTitle = new javax.swing.JLabel();
         roomIdValue = new javax.swing.JTextField();
         roomIdLabel = new javax.swing.JLabel();
@@ -44,7 +46,7 @@ public class RoomName extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setBackground(Color.CYAN);
 
         frameTitle.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         frameTitle.setForeground(new java.awt.Color(255, 255, 255));
